@@ -25,7 +25,8 @@ def MenuModePC():
     butmod2 = Button(mainmenu, text="Сменить режим", width=30,
                      command=lambda: (ChooseGameMode(), mainmenu.destroy(), mode2.destroy()))
     butmod2.grid(row=0, column=0, columnspan=2)
-    butscore2 = Button(mainmenu, text="Показать счёт", width=30, command=lambda: (BtnScoreModePC(), mainmenu.withdraw()))
+    butscore2 = Button(mainmenu, text="Показать счёт", width=30,
+                       command=lambda: (BtnScoreModePC(), mainmenu.withdraw()))
     butscore2.grid(column=0, row=1, columnspan=2)
     butexit2 = Button(mainmenu, text="Выйти", width=30, command=lambda: exit(window))
     butexit2.grid(column=0, row=4, columnspan=2)
@@ -46,14 +47,16 @@ def MenuModeFriends():
     butmod = Button(newwindow, text="Сменить режим", width=30,
                     command=lambda: (ChooseGameMode(), newwindow.destroy(), mode1.destroy()))
     butmod.grid(row=0, column=0, columnspan=2)
-    butscore = Button(newwindow, text="Показать счёт", width=30, command=lambda: (BtnScoreModeFriends(), newwindow.withdraw()))
+    butscore = Button(newwindow, text="Показать счёт", width=30,
+                      command=lambda: (BtnScoreModeFriends(), newwindow.withdraw()))
     butscore.grid(column=0, row=1, columnspan=2)
     butexit = Button(newwindow, text="Выйти", width=30, command=lambda: exit(window))
     butexit.grid(column=0, row=4, columnspan=2)
     butresume = Button(newwindow, text="Возобновить", width=30,
                        command=lambda: (mode1.deiconify(), newwindow.destroy()))
     butresume.grid(column=0, row=3, columnspan=2)
-    butrepeat = Button(newwindow, text="Заново", width=30, command=lambda: (BtnRepeatModeFriends(), newwindow.destroy()))
+    butrepeat = Button(newwindow, text="Заново", width=30,
+                       command=lambda: (BtnRepeatModeFriends(), newwindow.destroy()))
     butrepeat.grid(column=0, row=2, columnspan=2)
     newwindow.protocol("WM_DELETE_WINDOW", lambda: (mode1.deiconify(), newwindow.destroy()))
 
@@ -132,60 +135,80 @@ dictionary = {0: 'Камень',
 
 def BtnPlayModePC():
     pl1 = e3.get()
-    pc = randint(0, 2)
-    result = int(pl1) - pc
-    pcentry.delete(0, END)
-    match result:
-        case 0:
-            e3.configure(bg="green")
-            pcentry.configure(bg="green")
-            pcentry.insert(0, f'{dictionary[pc]}')
-        case 1:
-            e3.configure(bg="red")
-            pcentry.configure(bg="green")
-            scr2[1] = scr2[1] + 1
-            pcentry.insert(0, f'{dictionary[pc]}')
-        case 2:
-            e3.configure(bg="green")
-            pcentry.configure(bg="red")
-            scr2[0] = scr2[0] + 1
-            pcentry.insert(0, f'{dictionary[pc]}')
-        case -1:
-            e3.configure(bg="green")
-            pcentry.configure(bg="red")
-            scr2[0] = scr2[0] + 1
-            pcentry.insert(0, f'{dictionary[pc]}')
-        case -2:
-            e3.configure(bg="red")
-            pcentry.configure(bg="green")
-            scr2[1] = scr2[1] + 1
-            pcentry.insert(0, f'{dictionary[pc]}')
+    if pl1.isdigit() == False or int(pl1) > 2 or int(pl1) < 0:
+        excpt = Toplevel(window)
+        excpt.resizable(width=False, height=False)
+        excpt.title("Ошибка")
+        excpt.geometry('250x100')
+        text = Text(excpt, width=250, height=100, bg='red', fg='white', font="Courier 20")
+        text.insert(INSERT, "Неверный формат \nВведите: 0 или 1 или 2")
+        text.pack()
+    else:
+        pc = randint(0, 2)
+        result = int(pl1) - pc
+        pcentry.delete(0, END)
+        match result:
+            case 0:
+                e3.configure(bg="green")
+                pcentry.configure(bg="green")
+                pcentry.insert(0, f'{dictionary[pc]}')
+            case 1:
+                e3.configure(bg="red")
+                pcentry.configure(bg="green")
+                scr2[1] = scr2[1] + 1
+                pcentry.insert(0, f'{dictionary[pc]}')
+            case 2:
+                e3.configure(bg="green")
+                pcentry.configure(bg="red")
+                scr2[0] = scr2[0] + 1
+                pcentry.insert(0, f'{dictionary[pc]}')
+            case -1:
+                e3.configure(bg="green")
+                pcentry.configure(bg="red")
+                scr2[0] = scr2[0] + 1
+                pcentry.insert(0, f'{dictionary[pc]}')
+            case -2:
+                e3.configure(bg="red")
+                pcentry.configure(bg="green")
+                scr2[1] = scr2[1] + 1
+                pcentry.insert(0, f'{dictionary[pc]}')
+
+
 
 
 def BtnPlayModeFriends():
     pl1 = e1.get()
     pl2 = e2.get()
-    result = int(pl1) - int(pl2)
-    match result:
-        case 0:
-            e1.configure(bg="green")
-            e2.configure(bg="green")
-        case 1:
-            e1.configure(bg="red")
-            e2.configure(bg="green")
-            scr[1] = scr[1] + 1
-        case 2:
-            e1.configure(bg="green")
-            e2.configure(bg="red")
-            scr[0] = scr[0] + 1
-        case -1:
-            e1.configure(bg="green")
-            e2.configure(bg="red")
-            scr[0] = scr[0] + 1
-        case -2:
-            e1.configure(bg="red")
-            e2.configure(bg="green")
-            scr[1] = scr[1] + 1
+    if pl1.isdigit() == False or pl2.isdigit() == False or int(pl1) > 2 or int(pl1) < 0 or int(pl2) > 2 or int(pl2) < 0:
+        excpt = Toplevel(window)
+        excpt.resizable(width=False, height=False)
+        excpt.title("Ошибка")
+        excpt.geometry('250x100')
+        text = Text(excpt, width=250, height=100, bg='red', fg='white', font="Courier 20")
+        text.insert(INSERT, "Неверный формат \nВведите: 0 или 1 или 2")
+        text.pack()
+    else:
+        result = int(pl1) - int(pl2)
+        match result:
+            case 0:
+                e1.configure(bg="green")
+                e2.configure(bg="green")
+            case 1:
+                e1.configure(bg="red")
+                e2.configure(bg="green")
+                scr[1] = scr[1] + 1
+            case 2:
+                e1.configure(bg="green")
+                e2.configure(bg="red")
+                scr[0] = scr[0] + 1
+            case -1:
+                e1.configure(bg="green")
+                e2.configure(bg="red")
+                scr[0] = scr[0] + 1
+            case -2:
+                e1.configure(bg="red")
+                e2.configure(bg="green")
+                scr[1] = scr[1] + 1
 
 
 def BtnRepeatModePC():
